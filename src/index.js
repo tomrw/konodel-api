@@ -1,9 +1,8 @@
 import express from 'express';
+import login from './routes/login';
 
-var app = express();
+const app = express();
 
-app.get('/', function (req, res) {
-	res.send('hello!');
-});
+app.post('/login/', login);
 
 app.listen(3000);
