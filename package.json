@@ -7,15 +7,19 @@
     "start": "supervisor ./server.js",
     "test": "mocha test/**/*.spec.js --compilers js:babel-register",
     "watch-tests": "mocha test/**/*.spec.js -w --compilers js:babel-register",
-    "lint": "eslint src test"
+    "lint": "eslint src test",
+    "coverage": "./scripts/coverage.sh"
   },
   "author": "Tom West",
   "engines": {
     "node": ">=6.0"
   },
   "devDependencies": {
+    "babel-cli": "^6.11.4",
     "chai": "^3.5.0",
     "eslint": "^3.2.2",
+    "isparta": "^4.0.0",
+    "istanbul": "^0.4.4",
     "mocha": "^3.0.2",
     "sinon": "^1.17.5",
     "supervisor": "^0.11.0"
