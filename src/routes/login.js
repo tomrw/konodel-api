@@ -1,4 +1,8 @@
-import { MISSING_USERNAME_OR_PASSWORD } from '../constants/errors';
+import connection from '../connection/db';
+import {
+	MISSING_USERNAME_OR_PASSWORD,
+	INCORRECT_USERNAME_OR_PASSWORD
+} from '../constants/errors';
 
 export default function login(req, res) {
 	const { username, password } = req.body;
@@ -12,5 +16,21 @@ export default function login(req, res) {
 		return;
 	}
 
-	res.send(`${ username } -- ${ password }`);
+	connection.connect(() => {
+		const query = 'SELECT * FROM users WHERE username = ? AND password = ? LIMIT 1';
+		const params = [ username, password ];
+
+		connection.query(query, params, function (err, result) {
+			if (result.length === 1) {
+				res.json({
+					success: true
+				});
+			} else {
+				res.json({
+					success: false,
+					message: INCORRECT_USERNAME_OR_PASSWORD
+				});
+			}
+		});
+	});
 }
