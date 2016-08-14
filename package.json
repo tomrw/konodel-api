@@ -4,7 +4,7 @@
   "description": "API services for Konodel",
   "main": "src/index.js",
   "scripts": {
-    "start": "supervisor ./server.js",
+    "start": "PORT=3001 supervisor ./server.js",
     "test": "./scripts/test.sh",
     "watch-tests": "./scripts/test.sh -w",
     "lint": "eslint src test",

@@ -9,4 +9,4 @@ app.use(bodyParser.json());
 
 app.post('/login/', login);
 
-app.listen(3001);
+app.listen(process.env.PORT);
