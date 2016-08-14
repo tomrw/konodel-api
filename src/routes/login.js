@@ -1,19 +1,8 @@
 import authenticate from '../actions/authenticate';
-import { MISSING_USERNAME_OR_PASSWORD } from '../constants/errors';
+import login from '../actions/login';
 
-export default function login(req, res) {
-	const { username, password } = req.body;
-
-	if (!username || !password) {
-		res.json({
-			success: false,
-			message: MISSING_USERNAME_OR_PASSWORD
-		});
-
-		return;
-	}
-
-	authenticate(username, password)
+export default function (req, res) {
+	login(authenticate, req.body)
 		.then(() => {
 			res.json({
 				success: true

@@ -1,37 +1,74 @@
 import { assert } from 'chai';
-import { spy } from 'sinon';
+import mockDb from 'mock-knex';
+import sinon from 'sinon';
+import connection from '../../src/connection/db';
 import login from '../../src/routes/login';
 
-describe('login', () => {
-	it('should return an error if no username is given', () => {
-		const request = {
-			body: { password: 'test' }
-		};
-		const response = {
-			json: spy()
-		};
+describe('routes/login', () => {
+	let tracker;
 
-		login(request, response);
+	beforeEach(() => {
+		mockDb.mock(connection);
 
-		assert(response.json.calledWith({
-			success: false,
-			message: 'You must provide a username and password'
-		}));
+		tracker = mockDb.getTracker();
+		tracker.install();
 	});
 
-	it('should return an error if no password is given', () => {
+	afterEach(() => {
+		mockDb.unmock(connection);
+
+		tracker.uninstall();
+	});
+
+	it('should respond with an error message if the user provides invalid details', (done) => {
 		const request = {
-			body: { username: 'tom' }
+			body: {
+				username: 'tom'
+			}
 		};
 		const response = {
-			json: spy()
+			json: sinon.spy()
 		};
 
 		login(request, response);
 
-		assert(response.json.calledWith({
-			success: false,
-			message: 'You must provide a username and password'
-		}));
+		process.nextTick(() => {
+			assert(response.json.calledWith({
+				success: false,
+				message: 'You must provide a username and password'
+			}));
+
+			done();
+		});
+	});
+
+	it('should respond with a success message if the user is successfully authenticated', (done) => {
+		const request = {
+			body: {
+				username: 'tom',
+				password: 'password'
+			}
+		};
+		const response = {
+			json: sinon.spy()
+		};
+
+		tracker.on('query', (query) => {
+			query.response([
+				{
+					count: 1
+				}
+			]);
+		});
+
+		login(request, response);
+
+		setTimeout(() => {
+			assert(response.json.calledWith({
+				success: true
+			}));
+
+			done();
+		}, 10);
 	});
 });
