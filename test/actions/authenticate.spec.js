@@ -2,6 +2,10 @@ import { expect } from 'chai';
 import mockDb from 'mock-knex';
 import authenticate from '../../src/actions/authenticate';
 import connection from '../../src/connection/db';
+import {
+	ERROR_PROCESSING_REQUEST,
+	INCORRECT_USERNAME_OR_PASSWORD
+} from '../../src/constants/errors';
 
 describe('authenticate', () => {
 	let tracker;
@@ -54,6 +58,22 @@ describe('authenticate', () => {
 			]);
 		});
 
-		authenticate('tom', 'password').catch(done);
+		authenticate('tom', 'password').catch((err) => {
+			expect(err).to.equal(INCORRECT_USERNAME_OR_PASSWORD);
+
+			done();
+		});
+	});
+
+	it('should NOT authenticate a user if there is an error processing the login request', (done) => {
+		tracker.on('query', () => {
+			throw Error();
+		});
+
+		authenticate('tom', 'password').catch((err) => {
+			expect(err).to.equal(ERROR_PROCESSING_REQUEST);
+
+			done();
+		});
 	});
 });

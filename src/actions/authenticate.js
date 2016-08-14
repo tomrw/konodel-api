@@ -1,5 +1,9 @@
 import { defer } from 'es6-promise-extended';
 import connection from '../connection/db';
+import {
+	ERROR_PROCESSING_REQUEST,
+	INCORRECT_USERNAME_OR_PASSWORD
+} from '../constants/errors';
 
 export default function authenticate(username, password) {
 	const deferred = defer();
@@ -16,11 +20,11 @@ export default function authenticate(username, password) {
 			if (isAuthenticated) {
 				deferred.resolve();
 			} else {
-				deferred.reject();
+				deferred.reject(INCORRECT_USERNAME_OR_PASSWORD);
 			}
 		})
 		.catch(() => {
-			deferred.reject();
+			deferred.reject(ERROR_PROCESSING_REQUEST);
 		});
 
 	return deferred.promise;

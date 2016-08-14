@@ -1,8 +1,5 @@
 import authenticate from '../actions/authenticate';
-import {
-	MISSING_USERNAME_OR_PASSWORD,
-	INCORRECT_USERNAME_OR_PASSWORD
-} from '../constants/errors';
+import { MISSING_USERNAME_OR_PASSWORD } from '../constants/errors';
 
 export default function login(req, res) {
 	const { username, password } = req.body;
@@ -22,10 +19,10 @@ export default function login(req, res) {
 				success: true
 			});
 		})
-		.catch(() => {
+		.catch((reason) => {
 			res.json({
 				success: false,
-				message: INCORRECT_USERNAME_OR_PASSWORD
+				message: reason
 			});
 		});
 }
