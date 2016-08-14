@@ -9,7 +9,7 @@ export default function authenticate(username, password) {
 				password
 			})
 			.count('* AS count')
-			.then(function (result) {
+			.then((result) => {
 				const isAuthenticated = result[0].count === 1;
 
 				if (isAuthenticated) {
@@ -17,6 +17,9 @@ export default function authenticate(username, password) {
 				} else {
 					reject();
 				}
+			})
+			.catch(() => {
+				reject();
 			});
 	});
 }
