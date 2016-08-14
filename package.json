@@ -21,6 +21,7 @@
     "isparta": "^4.0.0",
     "istanbul": "^0.4.4",
     "mocha": "^3.0.2",
+    "mock-knex": "^0.3.2",
     "sinon": "^1.17.5",
     "supervisor": "^0.11.0"
   },

@@ -2,7 +2,6 @@ import connection from '../connection/db';
 
 export default function authenticate(username, password) {
 	return new Promise((resolve, reject) => {
-
 		connection('users')
 			.where({
 				username,
