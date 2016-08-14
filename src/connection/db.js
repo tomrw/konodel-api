@@ -1,10 +1,13 @@
-import mysql from 'mysql';
+import knex from 'knex';
 
-const connection = mysql.createConnection({
-	host: 'localhost',
-	user: 'root',
-	password: '',
-	database: 'konodel'
+const connection = knex({
+	client: 'mysql',
+	connection: {
+		host: 'localhost',
+		user: 'root',
+		password: '',
+		database: 'konodel'
+	}
 });
 
 export default connection;
