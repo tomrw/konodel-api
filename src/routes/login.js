@@ -3,9 +3,10 @@ import login from '../actions/login';
 
 export default function (req, res) {
 	login(authenticate, req.body)
-		.then(() => {
+		.then((token) => {
 			res.json({
-				success: true
+				success: true,
+				token
 			});
 		})
 		.catch((reason) => {

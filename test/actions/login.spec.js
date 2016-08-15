@@ -40,7 +40,9 @@ describe('login', () => {
 			password: 'password'
 		};
 
-		login(authenticate, params).then(done);
+		login(authenticate, params).then(() => {
+			done();
+		});
 	});
 
 	it('should NOT authenticate a user using the supplied username and password if there is an error authenticating', (done) => {

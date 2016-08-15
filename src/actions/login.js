@@ -1,4 +1,5 @@
 import { defer } from 'es6-promise-extended';
+import generateToken from './generate-token';
 import { MISSING_USERNAME_OR_PASSWORD } from '../constants/errors';
 
 export default function login(authenticate, params) {
@@ -10,7 +11,9 @@ export default function login(authenticate, params) {
 	} else {
 		authenticate(username, password)
 			.then(() => {
-				deferred.resolve();
+				const token = generateToken(username);
+
+				deferred.resolve(token);
 			})
 			.catch((reason) => {
 				deferred.reject(reason);

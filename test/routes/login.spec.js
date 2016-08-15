@@ -1,4 +1,4 @@
-import { assert } from 'chai';
+import { assert, expect } from 'chai';
 import mockDb from 'mock-knex';
 import sinon from 'sinon';
 import connection from '../../src/connection/db';
@@ -64,9 +64,12 @@ describe('routes/login', () => {
 		login(request, response);
 
 		setTimeout(() => {
-			assert(response.json.calledWith({
-				success: true
-			}));
+			const args = response.json.firstCall.args[0];
+
+			assert(args.success);
+
+			expect(args).to.have.property('token');
+			expect(args.token).to.be.a('string');
 
 			done();
 		}, 10);
